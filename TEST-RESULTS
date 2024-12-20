@@ -1,0 +1,57 @@
+// Testiranje Calculator klase
+import org.junit.Test;
+import static org.junit.Assert.*;
+import java.util.*;
+
+public class CalculatorTest {
+
+    // Test validnih izraza
+    @Test
+    public void testValidExpressions() {
+        assertEquals("9.0", Calculator.Run("4+5"));
+        assertEquals("2.0", Calculator.Run("10-2*4"));
+        assertEquals("7.0", Calculator.Run("6/2+4"));
+    }
+
+    // Test nevalidnih izraza
+    @Test
+    public void testInvalidExpressions() {
+        assertEquals("ERROR", Calculator.Run("4++5"));
+        assertEquals("ERROR", Calculator.Run("abc+3"));
+        assertEquals("ERROR", Calculator.Run("")); // Prazan ulaz
+    }
+
+    // Test specijalnih slucajeva
+    @Test
+    public void testSpecialCases() {
+        assertEquals("Infinity", Calculator.Run("1/0")); // Deljenje nulom
+        assertEquals("-Infinity", Calculator.Run("-1/0"));
+        assertEquals("0.0", Calculator.Run("+0")); // Ulaz koji pocinje znakom
+    }
+
+    // Test redosleda operacija
+    @Test
+    public void testOperationOrder() {
+        assertEquals("14.0", Calculator.Run("2+3*4")); // Prioritet mnozenja
+        assertEquals("20.0", Calculator.Run("(2+3)*4")); // Zagrade nisu podrzane
+    }
+
+    // Test edge slucajeva
+    @Test
+    public void testEdgeCases() {
+        assertEquals("0.0", Calculator.Run("0*999"));
+        assertEquals("999.0", Calculator.Run("999")); // Samo broj
+    }
+
+    // Jedinicni test za funkciju Calculate
+    @Test
+    public void testCalculateFunction() {
+        List<Float> numbers = new ArrayList<>(Arrays.asList(2.0f, 3.0f, 4.0f));
+        List<String> operations = new ArrayList<>(Arrays.asList("+", "*"));
+
+        Calculator.Calculate(numbers, operations);
+
+        assertEquals(14.0f, Calculator.finalResult, 0.001);
+    }
+
+}
